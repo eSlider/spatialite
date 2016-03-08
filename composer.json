@@ -1,0 +1,28 @@
+{
+  "name": "eslider/sqlite",
+  "description": "Sqlite and spatialite static binaries",
+  "keywords": [
+    "sqlite",
+    "sqlite3",
+    "spatialite",
+    "static"
+  ],
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Andriy Oblivantsev",
+      "email": "eslider@gmail.com",
+      "homepage": "https://github.com/eSlider"
+    }
+  ],
+  "require": {
+    "php": ">=5.3.1"
+  },
+  "config": {
+    "bin-dir": "bin"
+  },
+  "autoload": {
+    "psr-0": { "Eslider\\": "src/" }
+  }
+}
