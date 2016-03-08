@@ -26,7 +26,19 @@ SpatiaLite is licensed under the MPL tri-license terms; you are free to choose t
 * the [GPL v2.0](http://www.gnu.org/licenses/gpl-2.0.html#TOC1) or any subsequent version
 * the [LGPL v2.1](http://www.gnu.org/licenses/lgpl-2.1.html) or any subsequent version
 
+Tests
+=====
+
+PHP Unit test command:
+
+`/usr/bin/php7vendor/phpunit/phpunit/phpunit --no-configuration sqlite-driver/tests`
+
+By the first time tests creates an `spatialite.sqlite` file in the project directory. 
+The file has geometries and spatial functions. This initial process take some time (>1 min). 
+Next time tests runs faster.
+
 Refer
 =====
+
 Official PHP repository located at http://www.gaia-gis.it/
 Powered by  https://www.sqlite.org/

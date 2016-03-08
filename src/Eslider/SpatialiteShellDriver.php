@@ -284,7 +284,6 @@ class SpatialiteShellDriver
     /**
      * @param $wkb
      * @return null
-     * @internal param $wkt
      */
     public function wktFromWkb($wkb)
     {
@@ -293,7 +292,6 @@ class SpatialiteShellDriver
 
     /**
      * @param $wkb
-     * @internal param $wkt
      * @return null
      */
     public function wktFromHex($wkb)
