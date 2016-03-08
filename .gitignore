@@ -1,5 +1,7 @@
 .idea
-.composer.lock
 vendor
 bin/coveralls
 bin/phpunit
+composer.lock
+spatialite.sqlite
+
