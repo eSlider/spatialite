@@ -1,5 +1,5 @@
 {
-  "name": "eslider/sqlite",
+  "name": "eslider/spatialite",
   "description": "Sqlite and spatialite static binaries",
   "keywords": [
     "sqlite",
@@ -16,6 +16,11 @@
       "homepage": "https://github.com/eSlider"
     }
   ],
+  "require-dev": {
+    "phpunit/phpunit": ">=3.7",
+    "predis/predis": "~1.0",
+    "satooshi/php-coveralls": "~0.6"
+  },
   "require": {
     "php": ">=5.3.1"
   },
