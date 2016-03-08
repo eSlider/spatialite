@@ -31,7 +31,7 @@ Tests
 
 PHP Unit test command:
 
-`php vendor/phpunit/phpunit/phpunit tests/`
+`bin/phpunit tests`
 
 By the first time tests creates an `spatialite.sqlite` file in the project directory. 
 The file has geometries and spatial functions. This initial process take some time (>1 min). 
