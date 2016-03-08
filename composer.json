@@ -8,7 +8,7 @@
     "static"
   ],
   "type": "library",
-  "license": "MIT",
+  "license": "LGPL-2.1",
   "authors": [
     {
       "name": "Andriy Oblivantsev",
