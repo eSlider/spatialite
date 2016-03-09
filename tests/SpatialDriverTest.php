@@ -38,6 +38,12 @@ class SpatialDriverTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('', SpatialiteShellDriver::SPLIT_CELL_CHAR);
     }
 
+    public function testJson1Extension()
+    {
+        $json = '{"a":2,"c":[4,5,{"f":7}]}';
+        var_dump($this->db->fetchColumn("SELECT json_extract('$json', '$.c')"));
+    }
+
     /**
      * Test insert and fetch point geometries
      */
@@ -58,7 +64,7 @@ class SpatialDriverTest extends \PHPUnit_Framework_TestCase
 
         $db->emptyTable($tableName);
 
-        for ($i = 0; $i < 3; $i++) {
+        for ($i = 0; $i < self::INSERT_COUNT; $i++) {
             $id   = $db->insert($tableName, array(
                 $pointGeomName => new SpatialGeometry($pointWkt, SpatialGeometry::TYPE_WKT, $srid)
             ), $idKey);
