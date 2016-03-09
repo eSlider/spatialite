@@ -116,8 +116,8 @@ class SpatialiteShellDriver
     public function insert($tableName, array $data, $idColumn = 'id', $debug = false)
     {
         $tableName = $this->quote($tableName);
-        $keys      = self::NAME_ESC_CHAR . implode(self::NAME_ESC_CHAR . ',', array_keys($data)) . self::NAME_ESC_CHAR;
-        $values    = array();
+        $keys = self::NAME_ESC_CHAR . implode(self::NAME_ESC_CHAR . ',' . self::NAME_ESC_CHAR, array_keys($data)) . self::NAME_ESC_CHAR;
+        $values = array();
 
         foreach ($data as $value) {
             $values[] = self::escapeValue($value);
@@ -337,6 +337,15 @@ class SpatialiteShellDriver
     public function emptyTable($name)
     {
         return $this->query("DELETE FROM " . $this->quote($name));
+    }
+
+    /**
+     * @param $name
+     * @return array
+     */
+    public function dropTable($name)
+    {
+        return $this->query("DROP TABLE  " . $this->quote($name));
     }
 
     /**
