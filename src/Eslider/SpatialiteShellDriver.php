@@ -16,21 +16,19 @@ class SpatialiteShellDriver
     const NAME_ESC_CHAR   = '`';
     const NULL            = 'NULL';
 
-    protected $libPath;
-    protected $_libLoad;
-
     /**
      * Spatialite constructor.
      *
-     * @param string $dbPath Database file path
-     * @param string $libPath
-     * @param string $binPath
+     * @param string $dbPath Database file path.
+     * @param string $libPath mod_spatialite path. Optional.
+     * @param string $binPath sqlite binary path. Optional.
      */
-    public function __construct($dbPath,
-        $libPath = "bin/x64/mod_spatialite",
-        $binPath = "bin/x64/sqlite3") // spatialite
+    public function __construct($dbPath, $libPath = null, $binPath = null)
     {
-        $this->libPath = $libPath;
+        $path          = __dir__ . '/../../bin/x64';
+        $binPath       = $binPath ? $binPath : $path . '/sqlite3';
+        $libPath       = $libPath ? $libPath : $path . '/mod_spatialite';
+
         $this->cmd     = escapeshellarg($binPath)
             //. ' -ascii '
             . ' -separator ' . escapeshellarg(self::SPLIT_CELL_CHAR)
@@ -238,7 +236,13 @@ class SpatialiteShellDriver
      */
     public function addGeometryColumn($tableName, $columnName = "geom", $srid = 4326, $type = "POLYGON")
     {
-        return $this->query("SELECT AddGeometryColumn('$tableName', '$columnName', $srid, '$type', 'XY')");
+        return $this->query("SELECT AddGeometryColumn("
+            . $this->escapeValue($tableName)
+            . ", "
+            . $this->escapeValue($columnName)
+            . ", $srid, "
+            . $this->escapeValue($type)
+            . ", 'XY')");
     }
 
     /**
@@ -250,7 +254,13 @@ class SpatialiteShellDriver
      */
     public function getSrid($tableName, $columnName = null)
     {
-        return $this->fetchColumn("SELECT srid FROM geometry_columns WHERE f_table_name LIKE '$tableName'" . ($columnName ? " AND f_geometry_column LIKE '{$columnName}'" : ''));
+        $tableName  = $this->escapeValue($tableName);
+        $columnName = $this->escapeValue(empty($columnName) ? false : $columnName);
+        return $this->fetchColumn("SELECT srid
+          FROM geometry_columns
+          WHERE f_table_name
+          LIKE $tableName"
+            . ($columnName ? " AND f_geometry_column LIKE {$columnName}" : ''));
     }
 
     /**
