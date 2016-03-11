@@ -16,7 +16,7 @@ class SpatialDriverTest extends \PHPUnit_Framework_TestCase
     const TABLE_NAME       = "geosxs";
     const GEOM_COLUMN_NAME = 'geom';
     const SRID             = 4326;
-    const INSERT_COUNT     = 3;
+    const INSERT_COUNT     = 5;
     const ID_COLUMN_NAME   = 'id';
 
     /**
@@ -31,6 +31,7 @@ class SpatialDriverTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->db = new SpatialiteShellDriver(self::DB_PATH);
+        $sql = "SELECT st_srid(pois.Geometry) FROM pois";
     }
 
     public function testDriverSplitters()
@@ -87,12 +88,12 @@ class SpatialDriverTest extends \PHPUnit_Framework_TestCase
      */
     public function testPolygons()
     {
-        $tableName      = self::TABLE_NAME;
         $geomColumnName = self::GEOM_COLUMN_NAME;
         $idColumnName   = self::ID_COLUMN_NAME;
         $srid           = self::SRID;
         $polygonWkt     = self::POLYGON_WKT;
         $type           = 'POLYGON';
+        $tableName      = "test_".strtolower($type);
 
         if ($this->db->hasTable($tableName)) {
             $tableInfo = $this->db->getTableInfo($tableName);
@@ -105,7 +106,6 @@ class SpatialDriverTest extends \PHPUnit_Framework_TestCase
             $this->db->addGeometryColumn($tableName, $geomColumnName, $srid, $type);
         }
 
-        $lastId = $this->db->getLastInsertId($tableName);
         for ($i = 0; $i < self::INSERT_COUNT; $i++) {
             $geom = new SpatialGeometry($polygonWkt, SpatialGeometry::TYPE_WKT, $srid);
             $id   = $this->db->insert($tableName, array(
@@ -118,9 +118,8 @@ class SpatialDriverTest extends \PHPUnit_Framework_TestCase
                 . " WHERE " . $idColumnName . "=" . $id);
 
             $this->assertEquals($id, $data[ $idColumnName ]);
+            $this->assertEquals($id, $this->db->getLastInsertId($tableName));
             $this->assertEquals($data[ $geomColumnName ], $polygonWkt);
-            $this->assertTrue($lastId < $id);
-            $lastId = $id;
         }
     }
 
