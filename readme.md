@@ -32,6 +32,13 @@ Develop
 
 `composer update`
 
+Setup 
+=====
+
+In order to get native driver work, you need set absolute path of `sqlite3.extension_dir` variable in `php.ini` file to the `bin/x64` directory, where `mod_spatialite.so` can be found.
+### Example: 
+`sqlite3.extension_dir = /var/www/project_name/vendor/eslider/spatialite/bin/x64/mod_spatialite`
+
 
 Tests
 =====
