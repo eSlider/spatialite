@@ -13,7 +13,7 @@ class SpatialSqlite3DriverTest extends \PHPUnit_Framework_TestCase
 {
     const GEOM_COLUMN_NAME = 'geom';
     const SRID             = 4326;
-    const INSERT_COUNT     = 50;
+    const INSERT_COUNT     = 500;
 
     /** @var SpatialiteNativeDriver */
     protected $nativeDb;
