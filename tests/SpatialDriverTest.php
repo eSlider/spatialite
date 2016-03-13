@@ -26,12 +26,11 @@ class SpatialDriverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @return SpatialiteShellDriver
-     * @bedoreAsset
+     * @beforeAsset
      */
     protected function setUp()
     {
         $this->db = new SpatialiteShellDriver(self::DB_PATH);
-        $sql = "SELECT st_srid(pois.Geometry) FROM pois";
     }
 
     public function testDriverSplitters()
