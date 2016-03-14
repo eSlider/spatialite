@@ -6,7 +6,7 @@ use Eslider\SpatialiteShellDriver;
  *
  * @author Andriy Oblivantsev <eslider@gmail.com>
  */
-class SpatialDriverTest extends \PHPUnit_Framework_TestCase
+class SpatialShellDriverTest extends \PHPUnit_Framework_TestCase
 {
     const DB_PATH          = "spatialite.sqlite";
     const POLYGON_WKT      = 'POLYGON((761808.155309 4966649.458816, 762432.549628 4966393.94736, 764168.27812 4966137.407299, 763486.212544 4966081.379442, 762462.485356 4966252.975485, 761808.155309 4966649.458816))';
@@ -41,7 +41,7 @@ class SpatialDriverTest extends \PHPUnit_Framework_TestCase
     public function testJson1Extension()
     {
         $json = '{"a":2,"c":[4,5,{"f":7}]}';
-        var_dump($this->db->fetchColumn("SELECT json_extract('$json', '$.c')"));
+        $this->db->fetchColumn("SELECT json_extract('$json', '$.c')");
     }
 
     /**
