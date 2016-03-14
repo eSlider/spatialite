@@ -13,6 +13,9 @@ class SpatialiteShellDriver extends SpatialiteBaseDriver
     const NULL_CHAR       = '';
     const SPLIT_ROW_CHAR  = "\n";
 
+    /** @var string SQL for loading spatialite library */
+    protected $_libLoad;
+
     /**
      * Spatialite constructor.
      *
