@@ -25,13 +25,19 @@ class SpatialGeometry
      */
     public function __construct($value, $type = self::TYPE_WKT, $srid = null)
     {
-        $this->value = $value;
-        $this->type  = $type;
         $this->srid = intval($srid);
-        //if ($this->isEwkt($value, $type)) {
-        //    //SRID = 4269;
-        //    //if(self::TYPE_WKT
-        //}
+        $this->type = $type;
+        $this->setValue($value);
+    }
+
+    /**
+     * Get SRID
+     *
+     * @return int
+     */
+    public function getSrid()
+    {
+        return $this->srid;
     }
 
     /**
@@ -55,9 +61,9 @@ class SpatialGeometry
      *
      * @return bool
      */
-    private function isEwkt()
+    private function isEWKT()
     {
-        return $this->type  == self::TYPE_WKT && strpos("SRID=", $this->value);
+        return $this->type == self::TYPE_WKT && strpos($this->value, "SRID=") !== false;
     }
 
     /**
@@ -66,17 +72,40 @@ class SpatialGeometry
     public function __toString()
     {
         // ST_TRANSFORM(ST_GEOMFROMTEXT('$geom'), $srid)
-        if ($this->type == self::TYPE_WKT) {
+        if ($this->isWKT()) {
             return 'GeomFromText('
-            . SpatialiteShellDriver::escapeValue($this->value)
+            . SpatialiteBaseDriver::escapeValue($this->getValue())
             . ','
-            . SpatialiteShellDriver::escapeValue($this->srid)
-            .'
+            . SpatialiteBaseDriver::escapeValue($this->getSrid())
+            . '
            )';
         }
         if ($this->type == self::TYPE_WKB) {
-            return 'x' . $this->value;
+            return 'x' . $this->getValue();
         }
-        return $this->value;
+        return $this->getValue();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isWKT()
+    {
+        return $this->getType() == self::TYPE_WKT;
+    }
+
+    /**
+     * @param string $value
+     */
+    public function setValue($value)
+    {
+        $matches = null;
+        if ($this->isWKT() && preg_match("/^SRID=(\\d+);(.+)$/", $value, $matches)) {
+            list($ewkt, $srid, $wkt) = $matches;
+            $this->value = $wkt;
+            $this->srid  = $srid;
+        } else {
+            $this->value = $value;
+        }
     }
 }
