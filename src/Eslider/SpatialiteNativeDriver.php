@@ -16,21 +16,6 @@ class SpatialiteNativeDriver extends SpatialiteBaseDriver
     public $db;
 
     /**
-     * SpatialiteNativeDriver constructor.
-     *
-     * @param $filename
-     */
-    public function __construct($filename)
-    {
-        $isNewDatabase = !file_exists($filename);
-        $this->db      = new \SQLite3($filename);
-        $this->db->loadExtension('mod_spatialite.so');
-        if ($isNewDatabase) {
-            $this->initDbFile();
-        }
-    }
-
-    /**
      * Check if the driver can be used.
      *
      * In order to get driver work, you need set absolute path of ´sqlite3.extension_dir´ variable in ´php.ini´ file
@@ -43,6 +28,21 @@ class SpatialiteNativeDriver extends SpatialiteBaseDriver
     public static function canBeUsed()
     {
         return file_exists(ini_get('sqlite3.extension_dir') . '/mod_spatialite.so');
+    }
+
+    /**
+     * SpatialiteNativeDriver constructor.
+     *
+     * @param $filename
+     */
+    public function __construct($filename)
+    {
+        $isNewDatabase = !file_exists($filename);
+        $this->db      = new \SQLite3($filename);
+        $this->db->loadExtension('mod_spatialite.so');
+        if ($isNewDatabase) {
+            $this->initDbFile();
+        }
     }
 
     /**
