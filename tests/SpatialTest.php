@@ -9,11 +9,11 @@ use Eslider\SpatialiteNativeDriver;
  *
  * @author Andriy Oblivantsev <eslider@gmail.com>
  */
-class SpatialSqlite3DriverTest extends \PHPUnit_Framework_TestCase
+class SpatialTest extends \PHPUnit_Framework_TestCase
 {
     const GEOM_COLUMN_NAME = 'geom';
     const SRID             = 4326;
-    const INSERT_COUNT     = 500;
+    const INSERT_COUNT     = 10;
 
     /** @var SpatialiteNativeDriver */
     protected $nativeDb;
@@ -58,12 +58,13 @@ class SpatialSqlite3DriverTest extends \PHPUnit_Framework_TestCase
      */
     public function handlePointsAsWkt(SpatialiteBaseDriver $db)
     {
-        $pointWkt      = "POINT(-74.00153 40.719885)";
         $idKey         = 'id';
         $tableName     = 'pois';
         $pointGeomName = 'Geometry';
         $type          = "POINT";
         $srid          = self::SRID;
+        // SRID=$srid;
+        $pointWkt      = "POINT(-74.00153 40.719885)";
 
         if (!$db->hasTable($tableName)) {
             $db->createTable($tableName);
