@@ -65,7 +65,11 @@ abstract class SpatialiteBaseDriver
      */
     public function fetchColumn($sql, $debug = false)
     {
-        return current($this->fetchRow($sql, $debug));
+        $result = $this->fetchRow($sql, $debug);
+        if(is_array($result)){
+            $result = current($result);
+        }
+        return $result;
     }
 
     /**
