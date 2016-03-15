@@ -3,7 +3,6 @@ include("SpatialShellDriverTest.php");
 
 use Eslider\SpatialiteNativeDriver;
 
-
 /**
  * @author Andriy Oblivantsev <eslider@gmail.com>
  */
@@ -23,6 +22,9 @@ class SpatialNativeDriverTest extends SpatialShellDriverTest
         $this->db = new SpatialiteNativeDriver(self::DB_PATH);
     }
 
+    /**
+     * @skip
+     */
     public function testJson1Extension()
     {
     }

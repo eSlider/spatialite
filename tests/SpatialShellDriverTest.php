@@ -92,34 +92,36 @@ class SpatialShellDriverTest extends \PHPUnit_Framework_TestCase
         $srid           = self::SRID;
         $polygonWkt     = self::POLYGON_WKT;
         $type           = 'POLYGON';
-        $tableName      = "test_".strtolower($type);
+        $tableName      = "test_" . strtolower($type);
+        $db             = $this->db;
 
-        if ($this->db->hasTable($tableName)) {
-            $tableInfo = $this->db->getTableInfo($tableName);
-            $this->assertEquals($this->db->getSrid($tableName, $geomColumnName), $srid);
+        if ($db->hasTable($tableName)) {
+            $tableInfo = $db->getTableInfo($tableName);
+            $this->assertEquals($db->getSrid($tableName, $geomColumnName), $srid);
             $this->assertTrue(is_array($tableInfo) && count($tableInfo) > 0);
             $this->assertTrue(is_array(current($tableInfo)));
             //))
         } else {
-            $this->db->createTable($tableName);
-            $this->db->addGeometryColumn($tableName, $geomColumnName, $srid, $type);
+            $db->createTable($tableName);
+            $db->addGeometryColumn($tableName, $geomColumnName, $srid, $type);
         }
 
         for ($i = 0; $i < self::INSERT_COUNT; $i++) {
             $geom = new SpatialGeometry($polygonWkt, SpatialGeometry::TYPE_WKT, $srid);
-            $id   = $this->db->insert($tableName, array(
+            $id   = $db->insert($tableName, array(
                 $geomColumnName => $geom //self::WKB
             ), $idColumnName);
-            $data = $this->db->fetchRow("SELECT "
+            $data = $db->fetchRow("SELECT "
                 . ' *'
-                . " ,ST_AsText(" . $geomColumnName . ") AS " . $this->db->quote($geomColumnName)
+                . " ,ST_AsText(" . $geomColumnName . ") AS " . $db->quote($geomColumnName)
                 . " FROM " . $tableName
                 . " WHERE " . $idColumnName . "=" . $id);
 
             $this->assertEquals($id, $data[ $idColumnName ]);
-            $this->assertEquals($id, $this->db->getLastInsertId($tableName));
+            $this->assertEquals($id, $db->getLastInsertId($tableName));
             $this->assertEquals($data[ $geomColumnName ], $polygonWkt);
         }
+
     }
 
     /**
