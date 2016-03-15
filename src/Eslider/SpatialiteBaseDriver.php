@@ -132,21 +132,6 @@ abstract class SpatialiteBaseDriver
 
 
     /**
-     * Get driver info
-     *
-     * @return array
-     */
-    public function getVersions()
-    {
-        return $this->fetchRow("SELECT
-            geos_version() as geos,
-            proj4_version() as proj4,
-            sqlite_version() as sqlite,
-            spatialite_version() as spatialite,
-            spatialite_target_cpu() as targetCpu");
-    }
-
-    /**
      * Add geometry field
      *
      * @param        $tableName
@@ -164,6 +149,39 @@ abstract class SpatialiteBaseDriver
             . ", $srid, "
             . $this->escapeValue($type)
             . ", 'XY')");
+    }
+
+    /**
+     * Get driver info
+     *
+     * @return array
+     */
+    public function getVersions()
+    {
+        return $this->fetchRow("SELECT
+            geos_version() as geos,
+            proj4_version() as proj4,
+            sqlite_version() as sqlite,
+            spatialite_version() as spatialite,
+            spatialite_target_cpu() as targetCpu,
+            -- freexl_version() as freexl,
+            lwgeom_version() as lwgeom,
+            -- libxml2_version as libxml2,
+
+            HasIconv(),
+            HasMathSQL(),
+            HasGeoCallbacks(),
+            HasProj(),
+            HasGeos(),
+            HasGeosAdvanced(),
+            HasGeosTrunk(),
+            HasLwGeom(),
+            HasLibXML2(),
+            HasEpsg(),
+            HasFreeXL(),
+            HasGeoPackage()
+
+            ");
     }
 
     /**
@@ -209,7 +227,7 @@ abstract class SpatialiteBaseDriver
      */
     public function wkbFromWkt($wkt)
     {
-        return $this->fetchColumn("SELECT Hex(ST_AsBinary(ST_GeomFromText('$wkt')))");
+        return $this->fetchColumn("SELECT Hex(ST_AsBinary(ST_GeomFromText(" . $this->escapeValue($wkt) . ")))");
     }
 
     /**
