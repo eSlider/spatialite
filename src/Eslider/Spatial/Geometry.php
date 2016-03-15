@@ -1,13 +1,15 @@
 <?php
 
-namespace Eslider;
+namespace Eslider\Spatial;
+
+use Eslider\Spatial\Driver\Base;
 
 /**
- * Class SpatialGeometry
+ * Class Geometry
  *
  * @author Andriy Oblivantsev <eslider@gmail.com>
  */
-class SpatialGeometry
+class Geometry
 {
     const TYPE_WKT = 'WKT';
     const TYPE_WKB = 'WKB';
@@ -17,7 +19,7 @@ class SpatialGeometry
     protected $type;
 
     /**
-     * SpatialGeometry constructor.
+     * Geometry constructor.
      *
      * @param string $value WKT, WKB or HEX
      * @param string $type  Geometry type: WKT, WKB, HEX
@@ -74,9 +76,9 @@ class SpatialGeometry
         // ST_TRANSFORM(ST_GEOMFROMTEXT('$geom'), $srid)
         if ($this->isWKT()) {
             return 'GeomFromText('
-            . SpatialiteBaseDriver::escapeValue($this->getValue())
+            . Base::escapeValue($this->getValue())
             . ','
-            . SpatialiteBaseDriver::escapeValue($this->getSrid())
+            . Base::escapeValue($this->getSrid())
             . '
            )';
         }

@@ -1,7 +1,7 @@
 <?php
 include("SpatialShellDriverTest.php");
 
-use Eslider\SpatialiteNativeDriver;
+use Eslider\Spatial\Driver\NativeDriver;
 
 /**
  * @author Andriy Oblivantsev <eslider@gmail.com>
@@ -9,17 +9,17 @@ use Eslider\SpatialiteNativeDriver;
 class SpatialNativeDriverTest extends SpatialShellDriverTest
 {
     /**
-     * @var SpatialiteNativeDriver
+     * @var NativeDriver
      */
     protected $db;
 
     /**
-     * @return SpatialiteNativeDriver
+     * @return NativeDriver
      * @beforeAsset
      */
     protected function setUp()
     {
-        $this->db = new SpatialiteNativeDriver(self::DB_PATH);
+        $this->db = new NativeDriver(self::DB_PATH);
     }
 
     /**

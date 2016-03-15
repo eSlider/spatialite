@@ -1,6 +1,7 @@
 <?php
 
-namespace Eslider;
+namespace Eslider\Spatial\Driver;
+
 
 /**
  * Class SpatialiteNativeDriver
@@ -8,7 +9,7 @@ namespace Eslider;
  * @package Eslider
  * @author  Andriy Oblivantsev <eslider@gmail.com>
  */
-class SpatialiteNativeDriver extends SpatialiteBaseDriver
+class NativeDriver extends Base
 {
     /**
      * @var \SQLite3
@@ -27,7 +28,7 @@ class SpatialiteNativeDriver extends SpatialiteBaseDriver
      */
     public static function canBeUsed()
     {
-        return file_exists(ini_get('sqlite3.extension_dir') . '/mod_spatialite.so');
+        return file_exists(ini_get('sqlite3.extension_dir') . '/mod_spatialite');
     }
 
     /**
@@ -37,9 +38,13 @@ class SpatialiteNativeDriver extends SpatialiteBaseDriver
      */
     public function __construct($filename)
     {
-        $isNewDatabase = !file_exists($filename);
-        $this->db      = new \SQLite3($filename);
-        $this->db->loadExtension('mod_spatialite.so');
+        $isNewDatabase  = !file_exists($filename);
+        $this->db       = new \SQLite3($filename);
+        $isWindows      = false;
+        $shared_library = 'mod_spatialite' . (PHP_OS == 'Linux' ? '.so' : '.dll');
+        //$is32          = PHP_INT_SIZE <= 4;
+
+        $this->db->loadExtension($shared_library);
         if ($isNewDatabase) {
             $this->initDbFile();
         }

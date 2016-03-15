@@ -1,6 +1,6 @@
 <?php
 
-namespace Eslider;
+namespace Eslider\Spatial\Driver;
 
 /**
  * Class SpatialiteBaseDriver
@@ -8,7 +8,7 @@ namespace Eslider;
  * @package Eslider
  * @author  Andriy Oblivantsev <eslider@gmail.com>
  */
-abstract class SpatialiteBaseDriver
+abstract class Base
 {
     const VALUE_ESC_CHAR = '\'';
     const NAME_ESC_CHAR  = '`';

@@ -1,6 +1,6 @@
 <?php
-use Eslider\SpatialGeometry;
-use Eslider\SpatialiteShellDriver;
+use Eslider\Spatial\Driver\ShellDriver;
+use Eslider\Spatial\Geometry;
 
 /**
  *
@@ -20,22 +20,22 @@ class SpatialShellDriverTest extends \PHPUnit_Framework_TestCase
     const ID_COLUMN_NAME   = 'id';
 
     /**
-     * @var SpatialiteShellDriver
+     * @var ShellDriver
      */
     protected $db;
 
     /**
-     * @return SpatialiteShellDriver
+     * @return ShellDriver
      * @beforeAsset
      */
     protected function setUp()
     {
-        $this->db = new SpatialiteShellDriver(self::DB_PATH);
+        $this->db = new ShellDriver(self::DB_PATH);
     }
 
     public function testDriverSplitters()
     {
-        $this->assertEquals('', SpatialiteShellDriver::SPLIT_CELL_CHAR);
+        $this->assertEquals('', ShellDriver::SPLIT_CELL_CHAR);
     }
 
     public function testJson1Extension()
@@ -66,7 +66,7 @@ class SpatialShellDriverTest extends \PHPUnit_Framework_TestCase
 
         for ($i = 0; $i < self::INSERT_COUNT; $i++) {
             $id   = $db->insert($tableName, array(
-                $pointGeomName => new SpatialGeometry($pointWkt, SpatialGeometry::TYPE_WKT, $srid)
+                $pointGeomName => new Geometry($pointWkt, Geometry::TYPE_WKT, $srid)
             ), $idKey);
             $data = $db->fetchRow("SELECT *,
                 ST_AsText($pointGeomName) as $pointGeomName,
@@ -107,7 +107,7 @@ class SpatialShellDriverTest extends \PHPUnit_Framework_TestCase
         }
 
         for ($i = 0; $i < self::INSERT_COUNT; $i++) {
-            $geom = new SpatialGeometry($polygonWkt, SpatialGeometry::TYPE_WKT, $srid);
+            $geom = new Geometry($polygonWkt, Geometry::TYPE_WKT, $srid);
             $id   = $db->insert($tableName, array(
                 $geomColumnName => $geom //self::WKB
             ), $idColumnName);

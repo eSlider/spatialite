@@ -1,13 +1,14 @@
 <?php
 
-namespace Eslider;
+namespace Eslider\Spatial\Driver;
+
 
 /**
  * Class Spatialite
  *
  * @author Andriy Oblivantsev <eslider@gmail.com>
  */
-class SpatialiteShellDriver extends SpatialiteBaseDriver
+class ShellDriver extends Base
 {
     const SPLIT_CELL_CHAR = '';
     const NULL_CHAR       = '';
@@ -25,7 +26,7 @@ class SpatialiteShellDriver extends SpatialiteBaseDriver
      */
     public function __construct($dbPath, $libPath = null, $binPath = null)
     {
-        $path    = __dir__ . '/../../bin/x64';
+        $path    = __DIR__ . '/../../../../bin/x64';
         $binPath = $binPath ? $binPath : $path . '/sqlite3';
         $libPath = $libPath ? $libPath : $path . '/mod_spatialite';
 
