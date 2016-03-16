@@ -28,7 +28,7 @@ class NativeDriver extends Base
      */
     public static function canBeUsed()
     {
-        return file_exists(ini_get('sqlite3.extension_dir') . '/mod_spatialite');
+        return file_exists(ini_get('sqlite3.extension_dir') . '/mod_spatialite.so');
     }
 
     /**
@@ -41,7 +41,7 @@ class NativeDriver extends Base
         $isNewDatabase  = !file_exists($filename);
         $this->db       = new \SQLite3($filename);
         $isWindows      = false;
-        $shared_library = 'mod_spatialite' . (PHP_OS == 'Linux' ? '.so' : '.dll');
+        $shared_library = $this->getExtensionFile();
         //$is32          = PHP_INT_SIZE <= 4;
 
         $this->db->loadExtension($shared_library);
@@ -106,5 +106,13 @@ class NativeDriver extends Base
     public function exec($sql)
     {
         return $this->db->exec($sql);
+    }
+
+    /**
+     * @return string
+     */
+    public function getExtensionFile()
+    {
+        return 'mod_spatialite' . (PHP_OS == 'Linux' ? '.so' : '.dll');
     }
 }

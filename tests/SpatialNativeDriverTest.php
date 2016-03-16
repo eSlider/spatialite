@@ -19,6 +19,9 @@ class SpatialNativeDriverTest extends SpatialShellDriverTest
      */
     protected function setUp()
     {
+        if(!NativeDriver::canBeUsed()){
+            $this->markTestSkipped("Driver can't be used!");
+        }
         $this->db = new NativeDriver(self::DB_PATH);
     }
 
