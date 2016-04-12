@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Spatialite : Static spatialite linux binaries and PHP shell wrapper driver">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Spatialite</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/eSlider/spatialite">View on GitHub</a>
+
+          <h1 id="project_title">Spatialite</h1>
+          <h2 id="project_tagline">Static spatialite linux binaries and PHP shell wrapper driver</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/eSlider/spatialite/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/eSlider/spatialite/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="repository" class="anchor" href="#repository" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Repository</h1>
+
+<p>Static linux binaries and PHP shell wrapper driver.</p>
+
+<h1>
+<a id="about" class="anchor" href="#about" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>About</h1>
+
+<p>SpatiaLite is an open source library intended to extend the SQLite core to support fully fledged Spatial SQL capabilities.
+SQLite is intrinsically simple and lightweight:</p>
+
+<ul>
+<li>a single lightweight library implementing the full SQL engine</li>
+<li>standard SQL implementation: almost complete SQL-92</li>
+<li>no complex client/server architecture</li>
+<li>a whole database simply corresponds to a single monolithic file (no size limits)</li>
+<li>any DB-file can be safely exchanged across different platforms, because the internal architecture is universally portable</li>
+<li>no installation, no configuration</li>
+</ul>
+
+<p>SpatiaLite is smoothly integrated into SQLite to provide a complete and powerful Spatial DBMS (mostly OGC-SFS compliant).
+Using SQLite + SpatiaLite you can effectively deploy an alternative open source Spatial DBMS roughly equivalent to PostgreSQL + PostGIS.</p>
+
+<p>SpatiaLite is licensed under the MPL tri-license terms; you are free to choose the best-fit license between:</p>
+
+<ul>
+<li>the <a href="http://www.mozilla.org/MPL/MPL-1.1.html">MPL 1.1</a> </li>
+<li>the <a href="http://www.gnu.org/licenses/gpl-2.0.html#TOC1">GPL v2.0</a> or any subsequent version</li>
+<li>the <a href="http://www.gnu.org/licenses/lgpl-2.1.html">LGPL v2.1</a> or any subsequent version</li>
+</ul>
+
+<h1>
+<a id="develop" class="anchor" href="#develop" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Develop</h1>
+
+<p><code>composer update</code></p>
+
+<h1>
+<a id="setup-" class="anchor" href="#setup-" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Setup </h1>
+
+<p>In order to get native driver work, you need set absolute path of <code>sqlite3.extension_dir</code> variable in <code>php.ini</code> file to the <code>bin/x64</code> directory, where <code>mod_spatialite.so</code> can be found.</p>
+
+<h3>
+<a id="example" class="anchor" href="#example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Example:</h3>
+
+<p><code>sqlite3.extension_dir = /var/www/project_name/vendor/eslider/spatialite/bin/x64/mod_spatialite</code></p>
+
+<h1>
+<a id="tests" class="anchor" href="#tests" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tests</h1>
+
+<p>PHP Unit test command:</p>
+
+<p><code>bin/phpunit tests</code></p>
+
+<p>By the first time tests creates an <code>spatialite.sqlite</code> file in the project directory. 
+The file has geometries and spatial functions. This initial process take some time (&gt;1 min). 
+Next time tests runs faster.</p>
+
+<h1>
+<a id="refer" class="anchor" href="#refer" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Refer</h1>
+
+<p>Official PHP repository located at <a href="http://www.gaia-gis.it/">http://www.gaia-gis.it/</a>
+Powered by  <a href="https://www.sqlite.org/">https://www.sqlite.org/</a></p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Spatialite maintained by <a href="https://github.com/eSlider">eSlider</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
