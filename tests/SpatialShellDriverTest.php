@@ -144,4 +144,9 @@ class SpatialShellDriverTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->db->wkbFromWkt(self::WKT), self::WKB);
         $this->assertEquals($this->db->wktFromHex(self::HEX), self::WKT);
     }
+
+    public function testTableNames()
+    {
+        $this->assertTrue(in_array("geometry_columns", $this->db->listTableNames()));
+    }
 }

@@ -376,4 +376,18 @@ abstract class SpatialiteBaseDriver
             END
             ', $debug);
     }
+
+    /**
+     * List table names
+     *
+     * @return array
+     */
+    public function listTableNames()
+    {
+        $sql = /** @lang SQLite */
+            'SELECT name FROM sqlite_master WHERE type=\'table\'';
+        return array_map(function ($row) {
+            return $row["name"];
+        }, $this->query($sql));
+    }
 }
