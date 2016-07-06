@@ -18,6 +18,7 @@ class SpatialShellDriverTest extends \PHPUnit_Framework_TestCase
     const SRID             = 4326;
     const INSERT_COUNT     = 5;
     const ID_COLUMN_NAME   = 'id';
+    const FULL_SYNC        = 2;
 
     /**
      * @var SpatialiteShellDriver
@@ -40,8 +41,8 @@ class SpatialShellDriverTest extends \PHPUnit_Framework_TestCase
 
     public function testJson1Extension()
     {
-        $json = '{"a":2,"c":[4,5,{"f":7}]}';
-        $this->db->fetchColumn("SELECT json_extract('$json', '$.c')");
+        $json = $this->db->fetchColumn("SELECT json_object('ex','[52,3.14159]')");
+        $this->assertEquals($json, '{"ex":"[52,3.14159]"}');
     }
 
     /**
@@ -67,7 +68,7 @@ class SpatialShellDriverTest extends \PHPUnit_Framework_TestCase
         for ($i = 0; $i < self::INSERT_COUNT; $i++) {
             $id   = $db->insert($tableName, array(
                 $pointGeomName => new SpatialGeometry($pointWkt, SpatialGeometry::TYPE_WKT, $srid)
-            ), $idKey);
+            ));
             $data = $db->fetchRow("SELECT *,
                 ST_AsText($pointGeomName) as $pointGeomName,
                 Hex(ST_AsBinary($pointGeomName)) as wkb
@@ -148,5 +149,18 @@ class SpatialShellDriverTest extends \PHPUnit_Framework_TestCase
     public function testTableNames()
     {
         $this->assertTrue(in_array("geometry_columns", $this->db->listTableNames()));
+    }
+
+    /**
+     * The synchronous pragma gets or sets the current disk synchronization mode
+     * which controls how aggressively SQLite will write data all the way out to physical storage.
+     *
+     * 0 or OFF    No syncs at all
+     * 1 or NORMAL    Sync after each sequence of critical disk operations
+     * 2 or FULL    Sync after each critical disk operation
+     */
+    public function testSynchronous()
+    {
+        $this->assertEquals($this->db->fetchColumn("PRAGMA synchronous"), self::FULL_SYNC);
     }
 }
