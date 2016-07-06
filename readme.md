@@ -1,8 +1,9 @@
 Repository
 ================
 
-Static linux binaries and PHP shell wrapper driver.
-
+* Windows x32 and Linux x64 binaries  
+* PHP shell wrapper driver
+* PHP native wrapper driver
 
 About
 =====
