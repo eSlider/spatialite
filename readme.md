@@ -51,6 +51,15 @@ By the first time tests creates an `spatialite.sqlite` file in the project direc
 The file has geometries and spatial functions. This initial process take some time (>1 min). 
 Next time tests runs faster.
 
+Data-Management
+===============
+
+[Spatialite data management GUI](https://www.gaia-gis.it/gaia-sins/windows-bin-amd64/spatialite-4.3.0a-win-amd64.7z)
+
+```
+wine spatialite_gui.exe
+```
+
 Refer
 =====
 

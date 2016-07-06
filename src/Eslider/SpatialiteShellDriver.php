@@ -9,12 +9,17 @@ namespace Eslider;
  */
 class SpatialiteShellDriver extends SpatialiteBaseDriver
 {
-    const SPLIT_CELL_CHAR = '';
-    const NULL_CHAR       = '';
-    const SPLIT_ROW_CHAR  = "\n";
+    const SPLIT_CELL_CHAR               = '';
+    const NULL_CHAR                     = '';
+    const SPLIT_ROW_CHAR                = "\n";
+    const SPATIALITE_CMD_RESULT_PADDING = 19;
+    const SPATIALITE_MOD_RESULT_PADDING = 2;
 
     /** @var string SQL for loading spatialite library */
     protected $_libLoad;
+
+    /** @var string command line*/
+    protected $cmd;
 
     /**
      * Spatialite constructor.
@@ -25,9 +30,18 @@ class SpatialiteShellDriver extends SpatialiteBaseDriver
      */
     public function __construct($dbPath, $libPath = null, $binPath = null)
     {
-        $path    = __dir__ . '/../../bin/x64';
-        $binPath = $binPath ? $binPath : $path . '/sqlite3';
-        $libPath = $libPath ? $libPath : $path . '/mod_spatialite';
+        $osAlias = strtoupper(substr(PHP_OS, 0, 3));
+        $isWin   = $osAlias == 'CYG' || $osAlias == 'WIN';
+        $path    = __DIR__."/../../";
+
+        if ($isWin) {
+            $path .= 'bin/x32';
+            $binPath = $binPath ? $binPath : $path . '/spatialite.exe';
+        } else {
+            $path .= 'bin/x64';
+            $binPath = $binPath ? $binPath : $path . '/sqlite3';
+            $libPath = $libPath ? $libPath : $path . '/mod_spatialite';
+        }
 
         $this->cmd = escapeshellarg($binPath)
             //. ' -ascii '
@@ -35,7 +49,9 @@ class SpatialiteShellDriver extends SpatialiteBaseDriver
             . ' -nullvalue ' . escapeshellarg(self::NULL_CHAR)
             . ' -header ' . escapeshellarg($dbPath);
 
-        $this->_libLoad = escapeshellarg('SELECT load_extension(\'' . $libPath . '\');');
+        if ($libPath) {
+            $this->_libLoad = escapeshellarg('SELECT load_extension(\'' . $libPath . '\');');
+        }
 
         parent::__construct($dbPath);
     }
@@ -53,7 +69,9 @@ class SpatialiteShellDriver extends SpatialiteBaseDriver
         if ($debug) {
             var_dump($sql);
         }
-        $sql    = $this->_libLoad . escapeshellarg($sql);
+        if ($this->_libLoad) {
+            $sql = $this->_libLoad . escapeshellarg($sql);
+        }
         $result = `$this->cmd $sql`;
         return $parse ? $this->parseResults($result) : $result;
     }
@@ -77,12 +95,12 @@ class SpatialiteShellDriver extends SpatialiteBaseDriver
      */
     public function parseResults(&$result)
     {
-        $rowResults = explode(self::SPLIT_ROW_CHAR, $result);
-        $rowCount   = count($rowResults) - 1;
-        $headers    = $this->parseCells($rowResults[2]);
-        $rows       = array();
-
-        for ($i = 3; $i < $rowCount; $i++) {
+        $headLineNumber = $this->_libLoad ? self::SPATIALITE_MOD_RESULT_PADDING : self::SPATIALITE_CMD_RESULT_PADDING;
+        $rowResults     = explode(self::SPLIT_ROW_CHAR, $result);
+        $rowCount       = count($rowResults) - 1;
+        $headers        = $this->parseCells($rowResults[ $headLineNumber ]);
+        $rows           = array();
+        for ($i = $headLineNumber + 1; $i < $rowCount; $i++) {
             $data = array();
             foreach ($this->parseCells($rowResults[ $i ]) as $k => &$v) {
                 $data[ $headers[ $k ] ] = $v == self::NULL_CHAR ? null : $v;

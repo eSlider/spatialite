@@ -158,7 +158,8 @@ abstract class SpatialiteBaseDriver
      */
     public function getVersions()
     {
-        return $this->fetchRow("SELECT
+        return $this->fetchRow(/** @lang SQLite */
+            "SELECT
             geos_version() as geos,
             proj4_version() as proj4,
             sqlite_version() as sqlite,
