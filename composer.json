@@ -27,6 +27,10 @@
   "config": {
     "bin-dir": "bin"
   },
+  "bin": [
+    "bin/x32/spatialite.exe",
+    "bin/x64/sqlite3"
+  ],
   "autoload": {
     "psr-0": { "Eslider\\": "src/" }
   }
