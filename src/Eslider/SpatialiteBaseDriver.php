@@ -66,7 +66,7 @@ abstract class SpatialiteBaseDriver
     public function fetchColumn($sql, $debug = false)
     {
         $result = $this->fetchRow($sql, $debug);
-        if(is_array($result)){
+        if (is_array($result)) {
             $result = current($result);
         }
         return $result;
@@ -160,13 +160,13 @@ abstract class SpatialiteBaseDriver
     {
         return $this->fetchRow(/** @lang SQLite */
             "SELECT
-            geos_version() as geos,
-            proj4_version() as proj4,
-            sqlite_version() as sqlite,
-            spatialite_version() as spatialite,
-            spatialite_target_cpu() as targetCpu,
+            geos_version() AS geos,
+            proj4_version() AS proj4,
+            sqlite_version() AS sqlite,
+            spatialite_version() AS spatialite,
+            spatialite_target_cpu() AS targetCpu,
             -- freexl_version() as freexl,
-            lwgeom_version() as lwgeom,
+            lwgeom_version() AS lwgeom,
             -- libxml2_version as libxml2,
 
             HasIconv(),
@@ -336,16 +336,11 @@ abstract class SpatialiteBaseDriver
      * @param null|string $idColumn  ID column name
      * @return array
      */
-    public function getLastInsertId($tableName, $idColumn = 'id')
+    public function getLastInsertId($tableName, $idColumn = null)
     {
-        if (!$idColumn) {
-            $column   = current($this->getTableInfo($tableName));
-            $idColumn = $column["name"];
-        }
-        $sql = "SELECT
-            max(" . $this->quote($idColumn) . ")
-            FROM " . $this->quote($tableName);
-        return $this->fetchColumn($sql);
+        return $this->fetchColumn("SELECT
+            MAX(" . $this->getIdColumn($idColumn) . ")
+            FROM " . $this->quote($tableName));
     }
 
     /**
@@ -359,7 +354,7 @@ abstract class SpatialiteBaseDriver
      * @param bool   $debug
      * @return int Last insert id
      */
-    public function insert($_tableName, array $data, $idColumn = 'id', $debug = false)
+    public function insert($_tableName, array $data, $idColumn = null, $debug = false)
     {
         $_tableName = $this->quote($_tableName);
         $keys       = self::NAME_ESC_CHAR . implode(self::NAME_ESC_CHAR . ',' . self::NAME_ESC_CHAR, array_keys($data)) . self::NAME_ESC_CHAR;
@@ -372,7 +367,7 @@ abstract class SpatialiteBaseDriver
         return $this->fetchColumn('
             BEGIN;
                 INSERT INTO ' . $_tableName . ' (' . $keys . ') VALUES (' . implode(', ', $values) . ');
-                SELECT max(' . $this->quote($idColumn) . ') FROM ' . $_tableName . ';
+                SELECT MAX(' . $this->getIdColumn($idColumn) . ') FROM ' . $_tableName . ';
             END
             ', $debug);
     }
@@ -389,5 +384,16 @@ abstract class SpatialiteBaseDriver
         return array_map(function ($row) {
             return $row["name"];
         }, $this->query($sql));
+    }
+
+    /**
+     * Get ID column name or ROWID const
+     *
+     * @param $idColumn
+     * @return string
+     */
+    protected function getIdColumn($idColumn = null)
+    {
+        return $idColumn ? $this->quote($idColumn) : 'ROWID';
     }
 }
