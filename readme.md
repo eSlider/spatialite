@@ -27,6 +27,11 @@ SpatiaLite is licensed under the MPL tri-license terms; you are free to choose t
 * the [GPL v2.0](http://www.gnu.org/licenses/gpl-2.0.html#TOC1) or any subsequent version
 * the [LGPL v2.1](http://www.gnu.org/licenses/lgpl-2.1.html) or any subsequent version
 
+Installation
+============
+
+`composer require "eslider/spatialite"`
+
 
 Develop
 =======
