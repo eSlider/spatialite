@@ -163,4 +163,21 @@ class SpatialShellDriverTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals($this->db->fetchColumn("PRAGMA synchronous"), self::FULL_SYNC);
     }
+
+    public function testFTS()
+    {
+        $tableName = "test_fts4";
+        if (!$this->db->hasTable($tableName)) {
+            $this->db->fetchColumn("CREATE VIRTUAL TABLE {$tableName} USING fts4(subject, body)");
+            for ($i = 1; $i <= 100; $i++) {
+                $id = $this->db->insert($tableName, array(
+                    'subject' => $i . ' test ' . $i,
+                    'body'    => $i . 'hello hollad cccdd aayy' . $i
+                ));
+            }
+        }
+
+        $row = $this->db->query("SELECT * FROM $tableName WHERE subject MATCH 'test'");
+        return $row;
+    }
 }
