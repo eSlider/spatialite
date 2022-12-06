@@ -69,5 +69,5 @@ wine spatialite_gui.exe
 Refer
 =====
 
-Official PHP repository located at http://www.gaia-gis.it/
-Powered by  https://www.sqlite.org/
+* Official PHP repository located at http://www.gaia-gis.it/
+* Powered by  https://www.sqlite.org/
